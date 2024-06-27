@@ -1,0 +1,48 @@
+{% extends 'customer/old_base.html' %}
+{% block content %}
+<h1>Update {{person.name}}</h1>
+
+<div class="row">
+    <div class="col-md-5">
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{person.name}}" required>
+        </div>
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" class="form-control" id="age" name="age" value="{{person.age}}" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{person.email}}" required>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" {% if person.is_marrid%} checked {%endif%} class="form-check-input" id="is_married" name="is_married">
+            <label class="form-check-label" for="is_married">Married</label>
+        </div>
+        <div class="form-group">
+            <label for="bio">Bio:</label>
+            <textarea class="form-control" id="bio" name="bio" value="{{person.bio}}" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="height">Height:</label>
+            <input type="text" class="form-control" id="height" name="height" value="{{person.height}}" required>
+            <small id="heightHelp" class="form-text text-muted">Please enter your height</small>
+        </div>
+        <div class="form-group">
+            <label for="birthday">Birthday:</label>
+            <input type="date" class="form-control" id="birthday" name="birthday" value="{{person.birthday}}">
+        </div>
+        <div class="form-group">
+            <label for="birthtime">Birthtime:</label>
+            <input type="time" class="form-control" id="birthtime" name="birthtime" value="{{person.birthtime}}">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  
+    </div>
+  </div>
+
+{% endblock %}

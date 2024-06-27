@@ -1,0 +1,11 @@
+<h2>
+    <a href="{% url 'customer:index' %}">Home</a> | <a href="{% url 'customer:about' %}">About</a>|
+    <a href="{% url 'customer:persons' %}">Persons</a> 
+    {% if user.is_authenticated %}
+    |
+        <a href="{% url 'logout' %}">logout ({{user.username}})</a>
+    {%else%}
+    |
+    <a href="{% url 'login' %}">login</a>
+    {% endif %}
+</h2>

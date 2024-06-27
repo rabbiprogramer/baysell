@@ -1,0 +1,162 @@
+<h1 style="color: blue; font-size: 24px; text-align: center;">RABBI SOFT LIMITED</h1>
+
+{% extends 'customer/old_base.html' %}
+{% block content %}
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
+    <style>
+      /* Style for the delete button */
+      .delete-button {
+          background-color: #f44336; /* Red background color */
+          border: none; /* No border */
+          color: white; /* White text color */
+          padding: 10px 20px; /* Padding */
+          text-align: center; /* Center text */
+          text-decoration: none; /* No underline */
+          font-size: 16px; /* Font size */
+          cursor: pointer; /* Cursor on hover */
+          border-radius: 5px; /* Rounded corners */
+          transition: background-color 0.3s; /* Smooth transition on hover */
+      }
+  
+      /* Change background color on hover */
+      .delete-button:hover {
+          background-color: #d32f2f; /* Darker red */
+      }
+  </style>
+  
+    <br>
+    <h2>Create a New person</h2>
+    {% if message %}
+    <h3>{{message}}</h3>
+    {% endif %}
+    <div class="row">
+      <div class="col-md-5">
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" class="form-control" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+              <label for="age">Age:</label>
+              <input type="number" class="form-control" id="age" name="age" required>
+          </div>
+          <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+          </div>
+          <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="is_married" name="is_married">
+              <label class="form-check-label" for="is_married">Married</label>
+          </div>
+          <div class="form-group">
+              <label for="bio">Bio:</label>
+              <textarea class="form-control" id="bio" name="bio" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+              <label for="height">Height:</label>
+              <input type="text" class="form-control" id="height" name="height" required>
+              <small id="heightHelp" class="form-text text-muted">Please enter your height</small>
+          </div>
+          <div class="form-group">
+              <label for="birthday">Birthday:</label>
+              <input type="date" class="form-control" id="birthday" name="birthday">
+          </div>
+          <div class="form-group">
+              <label for="birthtime">Birthtime:</label>
+              <input type="time" class="form-control" id="birthtime" name="birthtime">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      </div>
+    </div>
+    <form>
+      <input type="text"name="name" placeholder="search by name">
+      <input type="submit" value = "search">
+    </form>
+    <h4>Delete All</h4>
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="delete_all" value="1">
+      <input class="delete-button" type="submit" value="delete_all">
+    </form>
+
+    <table>
+      <tr>
+        <th>serial number</th>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>is Married</th>
+        <th>Bio</th>
+        <th>Height</th>
+        <th>Birthday</th>
+        <th>Criate At</th>
+        <th>Father name</th>
+        <th>Mother name</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+      {% for person in all_persons %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{person.name}}</td>
+        <td>{{person.id}}</td>
+        <td>{{person.age}}</td>
+        <td>{{person.email}}</td>
+        <td>
+            {% if person.is_married == True %}
+                Yes
+            {% else %}
+                No 
+            {% endif %}
+        </td>
+        <td>{{person.bio}}</td>
+        <td>{{person.height}}</td>
+        <td>{{person.birthday}}</td>
+        <td>{{person.created_at}}</td>
+        <td>{{person.parents.father_name}}</td>
+        <td>{{person.parents.mother_name}}</td>
+        <td style="display: inline-block;font-style: rgb(171, 39, 39);
+        background-color:#00ffd9; /* Green background color */
+        border: none; /* No border */
+        color: rgb(209, 4, 4); /* White text color */
+        padding: 10px px; /* Padding */
+        text-align: center; /* Center text */
+        text-decoration: none; /* No underline */
+        font-size: 10px; /* Font size */
+        cursor: pointer; /* Cursor on hover */
+        border-radius: 5px; /* Rounded corners */
+        transition: background-color 0.3s;">
+          <a href="{% url 'customer:update_person' person.id %}">Edit</a>
+        </td>
+        <td>
+          <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="delete" value="{{person.id}}">
+            <input class="delete-button" type="submit" value="Delete">
+          </form>
+        
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    
+{% endblock %} 
